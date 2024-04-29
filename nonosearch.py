@@ -33,6 +33,14 @@ def check_present(root, key):
    # print_suggestions(root, key)
     return False
 
+def darnReplace(word):
+    if word.endswith("er"):
+        return "darner"
+    elif len(word) > 4:
+        return "darn" + word[4:]
+    else:
+        return "darn"
+
 if __name__ == "__main__":
     root = TrieNode()
     with open("nono.txt", "r") as file:
