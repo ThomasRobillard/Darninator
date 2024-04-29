@@ -9,11 +9,19 @@ def run():
     with open("nono.txt", "r") as file:
         for word in file:
             insert_trie(root, word.strip())
+
+    # check if Moderators.txt exists, if not, create it
+    try:
+        with open('Moderators.txt', 'x') as file:
+            file.close
+    except FileExistsError:
+        ...
     
     darnified_users = []
-    def check_Darnified(ctx):
-        if (ctx.author.id) in darnified_users:
-            return ctx.author.id
+    def check_Mod(ctx):
+        with open('Moderators.txt') as f:
+            if str(ctx.author.id) in f.read():
+                return ctx.author.id
 
     intents = discord.Intents.default()
     intents.message_content = True
@@ -26,7 +34,6 @@ def run():
     @bot.event
     async def on_message(message):
         await bot.process_commands(message)
-
         if message.author == bot.user:
             return
         
@@ -46,8 +53,9 @@ def run():
                 updated_msg = ' '.join(updated_words)
                 await message.delete()
                 await message.channel.send(f"{message.author} says: {updated_msg}")
-        
+    
     @bot.command()
+    @commands.check(check_Mod)
     async def darnify(ctx, user:discord.Member=None, level = 1):
         if user == None:
             await ctx.send("Please provide a user to Darnify.")
@@ -69,7 +77,33 @@ def run():
         else:
             add_Darnified(user.id)
             await ctx.send(f"{user} has been Darnified.")
+    
+    @bot.command()
+    @commands.check(check_Mod)
+    async def addmod(ctx, user:discord.Member=None):
+        if user == None:
+            await ctx.send("Please provide a user to add to the Moderator list.")
+            return
         
+        # check if user is already in mod list
+        def is_Moderator(user_id):
+            with open('Moderators.txt', 'r') as f:
+                if str(user_id) in f.read():
+                    return True
+                else:
+                    return False
+            
+        # Add user to mod list
+        def add_Moderator(user_id):
+            with open('Moderators.txt', 'a') as f:
+                f.write(f"{str(user_id)}\n")
+                f.close()
+
+        if is_Moderator(user.id) == True:
+            await ctx.send(f"The user {user} is already a Moderator.")
+        else:
+            add_Moderator(user.id)
+            await ctx.send(f"{user} has been added to Moderator list.")
     
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
