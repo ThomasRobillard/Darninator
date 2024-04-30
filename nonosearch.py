@@ -12,7 +12,6 @@ def insert_trie(root, s):
         temp = temp.Trie[index]
     temp.isEnd = True
 
-
 def check_present(root, key):
     for char in key:
         index = ord(char)

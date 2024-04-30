@@ -54,9 +54,10 @@ def run():
                 await message.delete()
                 await message.channel.send(f"{message.author} says: {updated_msg}")
     
+    # Add user to censorship (darnified) list
     @bot.command()
     @commands.check(check_Mod)
-    async def darnify(ctx, user:discord.Member=None, level = 1):
+    async def darnify(ctx, user:discord.Member=None):
         if user == None:
             await ctx.send("Please provide a user to Darnify.")
             return
@@ -77,6 +78,31 @@ def run():
         else:
             add_Darnified(user.id)
             await ctx.send(f"{user} has been Darnified.")
+
+    # Remove user from censorship (darnified) list
+    @bot.command()
+    @commands.check(check_Mod)
+    async def undarnify(ctx, user:discord.Member=None):
+        if user == None:
+            await ctx.send("Please provide a user to UnDarnify.")
+            return
+        
+        # check if user is in darnified_users[]
+        def is_Darnified(user_id):
+            if str(user_id) in darnified_users:
+                return True
+            else:
+                return False
+            
+        # remove user from darnified_users
+        def remove_Darnified(user_id):
+            darnified_users.remove(str(user_id))
+
+        if is_Darnified(user.id) == False:
+            await ctx.send(f"The user {user} is not Darnified.")
+        else:
+            remove_Darnified(user.id)
+            await ctx.send(f"{user} has been UnDarnified.")
     
     # Add to mod list
     @bot.command()
