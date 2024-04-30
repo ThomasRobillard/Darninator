@@ -78,6 +78,7 @@ def run():
             add_Darnified(user.id)
             await ctx.send(f"{user} has been Darnified.")
     
+    # Add to mod list
     @bot.command()
     @commands.check(check_Mod)
     async def addmod(ctx, user:discord.Member=None):
@@ -104,6 +105,37 @@ def run():
         else:
             add_Moderator(user.id)
             await ctx.send(f"{user} has been added to Moderator list.")
+
+    # Remove from mod list
+    @bot.command()
+    @commands.check(check_Mod)
+    async def removemod(ctx, user:discord.Member=None):
+        if user == None:
+            await ctx.send("Please provide a user to remove from the Moderator list.")
+            return
+        
+        # check if user is in mod list
+        def is_Moderator(user_id):
+            with open('Moderators.txt', 'r') as f:
+                if str(user_id) in f.read():
+                    return True
+                else:
+                    return False
+            
+        # remove user from mod list
+        def remove_Moderator(user_id):
+            with open('Moderators.txt', 'r') as f:
+                content = f.read()
+                updated_content = content.replace(str(user_id), '')
+            with open('Moderators.txt', 'w') as f:
+                f.write(updated_content)
+
+                
+        if is_Moderator(user.id) == False:
+            await ctx.send(f"The user {user} is not a Moderator.")
+        else:
+            remove_Moderator(user.id)
+            await ctx.send(f"{user} has been removed from Moderator list.")
     
 
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
