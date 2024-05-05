@@ -1,5 +1,4 @@
 # Darninator
-# A Darn good discord chat mod
 
 
 ## Getting started
