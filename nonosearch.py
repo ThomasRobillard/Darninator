@@ -13,6 +13,7 @@ def insert_trie(root, s):
     temp.isEnd = True
 
 def check_present(root, key):
+    key = ''.join(filter(lambda x: ord(x) < 128, key))
     for char in key:
         index = ord(char)
         if not root.Trie[index]:
