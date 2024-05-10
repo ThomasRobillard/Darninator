@@ -1,14 +1,16 @@
 import settings
-from nonosearch import TrieNode, insert_trie, check_present, darnReplace
+from nonosearch import TrieNode, Trie, darn_replace
 import discord
 from discord.ext import commands
 
 logger = settings.logging.getLogger("bot")
 def run():
-    root = TrieNode()
+    root = Trie()
     with open("nono.txt", "r") as file:
         for word in file:
-            insert_trie(root, word.strip())
+            root.insert_trie(word.strip())
+    
+
 
     # check if Moderators.txt exists, if not, create it
     try:
@@ -38,19 +40,12 @@ def run():
             return
         
         if str(message.author.id) in darnified_users:
-            deleteflag = False
-            msg = message.content.split()
-            updated_words = []
-            for word in msg:
-                if check_present(root, word):
-                    updated_word = darnReplace(word)
-                    deleteflag = True
-                else:
-                    updated_word = word
-                updated_words.append(updated_word)
-                    
-            if deleteflag:
-                updated_msg = ' '.join(updated_words)
+            matches = []
+            msg = message.content
+            matches = root.check_present(msg)
+            
+            if matches:
+                updated_msg = darn_replace(msg, root)
                 await message.delete()
                 await message.channel.send(f"{message.author} says: {updated_msg}")
     
