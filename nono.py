@@ -1,0 +1,26 @@
+import re
+
+nono_words_mapping = {
+    '8=D': 'darn',
+    'ass': 'darn',
+    'abortion': 'darnortion',
+    'ahole': 'darnhole',
+    'aids': 'darns',
+    'anal': 'darnal',
+    'anus': 'darnus',
+    'anuses': 'darnuses',
+    'arsch': 'darn',
+    'arse': 'darn',
+    'auschwitz': 'darnwitz',
+    'boob': 'darn',
+    'b00b': 'darn',
+    'baise': 'darn',
+    'baka': 'darna',
+    'bakachon': 'darnachon',
+    'bakatyon': 'darnatyon',
+    'ball': 'darn',
+    'bastard': 'darnard',
+    "beaner": 'darner',
+    r'b[ie13]+[iaoy1@0]*tch': 'darnch',
+    'beefwhistle': 'darnwhistle',
+}
