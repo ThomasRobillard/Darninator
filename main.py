@@ -1,7 +1,11 @@
 import settings
+import re
+from nono import nono_words_mapping
 from nonosearch import TrieNode, Trie, darn_replace
 import discord
 from discord.ext import commands
+
+
 
 logger = settings.logging.getLogger("bot")
 def run():
@@ -40,14 +44,16 @@ def run():
             return
         
         if str(message.author.id) in darnified_users:
-            matches = []
             msg = message.content
-            matches = root.check_present(msg)
+            print
+
+            for pattern, darn_variation in nono_words_mapping.items():
+                new_msg, num_replacements = re.subn(pattern, darn_variation, msg, flags=re.IGNORECASE)
+                if num_replacements > 0:
+                    await message.delete()
+                    await message.channel.send(f"{message.author} says: {new_msg}")
+            print(new_msg)
             
-            if matches:
-                updated_msg = darn_replace(msg, root)
-                await message.delete()
-                await message.channel.send(f"{message.author} says: {updated_msg}")
     
     # Add user to censorship (darnified) list
     @bot.command()
