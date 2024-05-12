@@ -45,14 +45,16 @@ def run():
         
         if str(message.author.id) in darnified_users:
             msg = message.content
-            print
+            delete_flag = False
 
             for pattern, darn_variation in nono_words_mapping.items():
                 new_msg, num_replacements = re.subn(pattern, darn_variation, msg, flags=re.IGNORECASE)
                 if num_replacements > 0:
-                    await message.delete()
-                    await message.channel.send(f"{message.author} says: {new_msg}")
-            print(new_msg)
+                    delete_flag = True
+                    msg = new_msg
+            if delete_flag:
+                await message.delete()
+                await message.channel.send(f"{message.author} says: {msg}")
             
     
     # Add user to censorship (darnified) list
