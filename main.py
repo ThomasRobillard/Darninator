@@ -67,10 +67,10 @@ def run():
             darnified_users.append(str(user_id))
 
         if is_Darnified(user.id) == True:
-            await ctx.send(f"The user {user} has already been Darnified.")
+            await ctx.send(f"The user {user.display_name} has already been Darnified.")
         else:
             add_Darnified(user.id)
-            await ctx.send(f"{user} has been Darnified.")
+            await ctx.send(f"{user.display_name} has been Darnified.")
 
     # Remove user from censorship (darnified) list
     @bot.command()
@@ -91,10 +91,10 @@ def run():
             darnified_users.remove(str(user_id))
 
         if is_Darnified(user.id) == False:
-            await ctx.send(f"The user {user} is not Darnified.")
+            await ctx.send(f"The user {user.display_name} is not Darnified.")
         else:
             remove_Darnified(user.id)
-            await ctx.send(f"{user} has been UnDarnified.")
+            await ctx.send(f"{user.display_name} has been UnDarnified.")
     
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
 
