@@ -14,15 +14,6 @@ def run():
         for word in file:
             root.insert_trie(word.strip())
     
-
-
-    # check if Moderators.txt exists, if not, create it
-    try:
-        with open('Moderators.txt', 'x') as file:
-            file.close
-    except FileExistsError:
-        ...
-    
     darnified_users = []
     def check_Mod(ctx):
         with open('Moderators.txt') as f:
@@ -54,12 +45,11 @@ def run():
                     msg = new_msg
             if delete_flag:
                 await message.delete()
-                await message.channel.send(f"{message.author} says: {msg}")
+                await message.channel.send(f"{message.author.display_name} says: {msg}")
             
     
     # Add user to censorship (darnified) list
     @bot.command()
-    @commands.check(check_Mod)
     async def darnify(ctx, user:discord.Member=None):
         if user == None:
             await ctx.send("Please provide a user to Darnify.")
@@ -84,7 +74,6 @@ def run():
 
     # Remove user from censorship (darnified) list
     @bot.command()
-    @commands.check(check_Mod)
     async def undarnify(ctx, user:discord.Member=None):
         if user == None:
             await ctx.send("Please provide a user to UnDarnify.")
@@ -107,66 +96,6 @@ def run():
             remove_Darnified(user.id)
             await ctx.send(f"{user} has been UnDarnified.")
     
-    # Add to mod list
-    @bot.command()
-    @commands.check(check_Mod)
-    async def addmod(ctx, user:discord.Member=None):
-        if user == None:
-            await ctx.send("Please provide a user to add to the Moderator list.")
-            return
-        
-        # check if user is already in mod list
-        def is_Moderator(user_id):
-            with open('Moderators.txt', 'r') as f:
-                if str(user_id) in f.read():
-                    return True
-                else:
-                    return False
-            
-        # Add user to mod list
-        def add_Moderator(user_id):
-            with open('Moderators.txt', 'a') as f:
-                f.write(f"{str(user_id)}\n")
-                f.close()
-
-        if is_Moderator(user.id) == True:
-            await ctx.send(f"The user {user} is already a Moderator.")
-        else:
-            add_Moderator(user.id)
-            await ctx.send(f"{user} has been added to Moderator list.")
-
-    # Remove from mod list
-    @bot.command()
-    @commands.check(check_Mod)
-    async def removemod(ctx, user:discord.Member=None):
-        if user == None:
-            await ctx.send("Please provide a user to remove from the Moderator list.")
-            return
-        
-        # check if user is in mod list
-        def is_Moderator(user_id):
-            with open('Moderators.txt', 'r') as f:
-                if str(user_id) in f.read():
-                    return True
-                else:
-                    return False
-            
-        # remove user from mod list
-        def remove_Moderator(user_id):
-            with open('Moderators.txt', 'r') as f:
-                content = f.read()
-                updated_content = content.replace(str(user_id), '')
-            with open('Moderators.txt', 'w') as f:
-                f.write(updated_content)
-
-                
-        if is_Moderator(user.id) == False:
-            await ctx.send(f"The user {user} is not a Moderator.")
-        else:
-            remove_Moderator(user.id)
-            await ctx.send(f"{user} has been removed from Moderator list.")
-    
-
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
 
      
