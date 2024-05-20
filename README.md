@@ -21,9 +21,6 @@ To be posted
 
 ## Roadmap
 Here is the general outline for future changes:
-* Fix known issues
-    * Since Discord automatically replaces emoticons with the emoji equivalent, this will cause an error, as the character is "out of range."
-    * If a word that would match normally has extra characters, it will not be replaced properly
 * Change "Moderator" list so that specific roles will automatically be able to change functionality. The owner and users with administrative roles will be able to darnify all users in the respective server with a single command.
 * Add an extreme version of darnification
     * It's possible to circumvent the darnification by using non-standard characters. Therefore, I plan to implement an extreme version of `!darnify`, where any user specified will have *every* word they send changed to some variation of darn. For example, "table" will become "darnble", etc.
