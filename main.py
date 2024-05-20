@@ -95,6 +95,16 @@ def run():
         else:
             remove_Darnified(user.id)
             await ctx.send(f"{user.display_name} has been UnDarnified.")
+
+    @undarnify.error
+    async def undarnify_error(ctx, error):
+        if isinstance(error, commands.MemberNotFound):
+            if error.argument == "all":
+                ...
+                # x = ctx.guild.members
+                # for member in x:
+                #     print(member.name)
+                
     
     bot.run(settings.DISCORD_API_SECRET, root_logger=True)
 
