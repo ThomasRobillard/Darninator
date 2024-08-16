@@ -9,16 +9,8 @@ from discord.ext import commands
 
 logger = settings.logging.getLogger("bot")
 def run():
-    root = Trie()
-    with open("nono.txt", "r") as file:
-        for word in file:
-            root.insert_trie(word.strip())
     
     darnified_users = []
-    def check_Mod(ctx):
-        with open('Moderators.txt') as f:
-            if str(ctx.author.id) in f.read():
-                return ctx.author.id
 
     intents = discord.Intents.default()
     intents.message_content = True
