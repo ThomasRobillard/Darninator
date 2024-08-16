@@ -41,8 +41,13 @@ def run():
             
     
     # Add user to censorship (darnified) list
-    @bot.command()
-    async def darnify(ctx, user:discord.Member=None):
+    @bot.command(
+            help = "Adds the specified user to the darnify list. Any swear "
+            + "words sent by users in this list will be censored with \"darn\".",
+            brief = "Censors the specified user."
+    )
+    async def darnify(ctx, user:discord.Member=
+                      commands.parameter(default=None, description="%USERNAME%")):
         if user == None:
             await ctx.send("Please provide a user to Darnify.")
             return
@@ -65,8 +70,13 @@ def run():
             await ctx.send(f"{user.display_name} has been Darnified.")
 
     # Remove user from censorship (darnified) list
-    @bot.command()
-    async def undarnify(ctx, user:discord.Member=None):
+    @bot.command(
+            help = "Removes specified user from the darnify list. Swear words"
+            + " sent by the user will send as normal.",
+            brief = "Uncensored the specified user."
+    )
+    async def undarnify(ctx, user:discord.Member=
+                        commands.parameter(default=None, description="%USERNAME%")):
         if user == None:
             await ctx.send("Please provide a user to UnDarnify.")
             return
